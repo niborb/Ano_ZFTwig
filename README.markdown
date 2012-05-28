@@ -5,12 +5,12 @@ Niborb:
 Added support for templates overrides. You can set template in Bootstrap:
 
 /application/Bootstrap.php:
-public function _initTemplatesPaths()
-    {
-        $this->bootstrap('view');
-        $view = $this->getResource('view');
-        $view->getTemplateEngine()->setBaseTemplate('default');
-    }
+	public function _initTemplatesPaths()
+    	{
+        	$this->bootstrap('view');
+        	$view = $this->getResource('view');
+        	$view->getTemplateEngine()->setBaseTemplate('default');
+    	}
 
 Twig will now search in the following paths in this order:
 1. /application/templates/<current_template>/<current_module>/<current_controller>/<current_action>.twig

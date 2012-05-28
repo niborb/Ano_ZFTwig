@@ -11,13 +11,13 @@ Warning: Currently this will only work with the Twig Engine!
     	{
         	$this->bootstrap('view');
         	$view = $this->getResource('view');
-        	$view->getTemplateEngine()->setBaseTemplate('default');
+        	$view->getTemplateEngine()->setBaseTemplate('NiceTemplate');
     	}
     	
 
 Twig will now search in the following paths in this order:
 
-	1. /application/templates/<current_template>/<current_module>/<current_controller>/<current_action>.twig
+	1. /application/templates/NiceTemplate/<current_module>/<current_controller>/<current_action>.twig
 	2. /application/templates/default/<current_module>/<current_controller>/<current_action>.twig
 	3. /application/modules/<current_module>/<current_controller>/<current_action>.twig
 

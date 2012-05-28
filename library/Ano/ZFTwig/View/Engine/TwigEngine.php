@@ -31,6 +31,11 @@ class Ano_ZFTwig_View_Engine_TwigEngine extends Ano_View_Engine_Abstract
     protected $viewSuffix = 'twig';
 
     /**
+     * @var string
+     */
+    protected $baseTemplate;
+
+    /**
      * @param array $config Configuration key-value pairs.
      */
     public function init(array $config = array())
@@ -112,6 +117,24 @@ class Ano_ZFTwig_View_Engine_TwigEngine extends Ano_View_Engine_Abstract
     }
 
     /**
+     * @param $twigTemplate
+     * @param $controller
+     * @param $module
+     * @return string
+     */
+    public function _getTemplatePath($twigTemplate, $controller, $module)
+    {
+        return APPLICATION_PATH . DIRECTORY_SEPARATOR
+            . 'templates' . DIRECTORY_SEPARATOR
+            . $twigTemplate . DIRECTORY_SEPARATOR
+            . $module . DIRECTORY_SEPARATOR
+            . 'views' . DIRECTORY_SEPARATOR
+            . 'scripts' . DIRECTORY_SEPARATOR
+            . $controller;
+
+    }
+
+    /**
      * Renders the template
      *
      * @param string $template The script view filename (fullpath)
@@ -154,6 +177,22 @@ class Ano_ZFTwig_View_Engine_TwigEngine extends Ano_View_Engine_Abstract
 
         $template = $this->getEnvironment()->loadTemplate($templateFile);
         $template->display($vars);
+    }
+
+    /**
+     * @param string $baseTemplate
+     */
+    public function setBaseTemplate($baseTemplate)
+    {
+        $this->baseTemplate = $baseTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseTemplate()
+    {
+        return $this->baseTemplate;
     }
 
 }

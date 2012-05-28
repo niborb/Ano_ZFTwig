@@ -1,6 +1,31 @@
 Last changes
 ============
 
+Niborb:
+Added support for templates overrides. You can set template in Bootstrap:
+
+/application/Bootstrap.php:
+public function _initTemplatesPaths()
+    {
+        $this->bootstrap('view');
+        $view = $this->getResource('view');
+        $view->getTemplateEngine()->setBaseTemplate('default');
+    }
+
+Twig will now search in the following paths in this order:
+1. /application/templates/<current_template>/<current_module>/<current_controller>/<current_action>.twig
+2. /application/templates/default/<current_module>/<current_controller>/<current_action>.twig
+3. /application/modules/<current_module>/<current_controller>/<current_action>.twig
+
+Also you can use the 3-step layout inheritance:
+
+1. /application/modules/<current_module>/index/index.twig can extend
+2. /application/modules/<current_module>/layout.twig which can extend
+3. /application/views/layouts/base.twig
+
+
+====
+
 ****** Changed the way some tags work. Removed the DefaultHelperTokenParser, and added a dedicated parser for each tag ******
 
 * Makes Ano_ZFTwig compatible with last twig stable version

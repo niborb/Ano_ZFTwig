@@ -116,14 +116,44 @@ class Ano_ZFTwig_View_Engine_TwigEngine extends Ano_View_Engine_Abstract
      *
      * @param string $template The script view filename (fullpath)
      * @param mixed  $vars     The vars to assign to the template
+     * @param boolean $override Override template search path
      */
     public function render($template, $vars = null)
     {
-        $path = dirname($template);
-        $templateFile = basename($template);
+        // always add the application/views/layout folder (for 3-step template override)
+        $this->getEnvironment()->getLoader()->addPath(
+            APPLICATION_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'layouts'
+        );
 
+        // if a thirds FALSE boolean is passed to the render function, then skip the complete
+        // template search, and revert back to the normal behaviour
+        if (!@func_get_arg(2)) {
+            $frontController = Zend_Controller_Front::getInstance();
+
+            // check current template
+            $twigTemplate = $this->getBaseTemplate();
+            $module = $frontController->getRequest()->getModuleName();
+            $controller = $frontController->getRequest()->getControllerName();
+
+            // check if there is template for the given TwigTemplate
+            $templatePath = $this->_getTemplatePath($twigTemplate, $controller, $module);
+            $defTemplatePath = $this->_getTemplatePath('default', $controller, $module);
+
+            if (@is_dir($templatePath)) {
+                $this->getEnvironment()->getLoader()->addPath($templatePath);
+            }
+
+            if (@is_dir($defTemplatePath)) {
+                $this->getEnvironment()->getLoader()->addPath($defTemplatePath);
+            }
+        }
+
+        $templateFile = basename($template);
+        $path = dirname($template);
         $this->getEnvironment()->getLoader()->addPath($path);
+
         $template = $this->getEnvironment()->loadTemplate($templateFile);
         $template->display($vars);
     }
+
 }

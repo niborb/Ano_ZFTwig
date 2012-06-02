@@ -1,7 +1,6 @@
 Last changes
 ============
 
-Niborb:
 Added support for templates overrides. You can set template in Bootstrap:
 
 Warning: Currently this will only work with the Twig Engine!

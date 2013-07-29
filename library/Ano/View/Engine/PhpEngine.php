@@ -41,6 +41,12 @@ class Ano_View_Engine_PhpEngine extends Ano_View_Engine_Abstract
     private $_useStreamWrapper = false;
 
     /**
+     * Temporary container for variables passed to the view
+     * @var array
+     */
+    private $_tempVars = array();
+
+    /**
      * @param array $config Configuration key-value pairs.
      */
     public function init(array $config = array())
@@ -93,11 +99,18 @@ class Ano_View_Engine_PhpEngine extends Ano_View_Engine_Abstract
      */
     public function render($template, $vars = null)
     {
+        // save the previous version of the temp vars and load the new vars
+        $previousTempVars = $this->_tempVars;
+        $this->_tempVars = $vars;
+
+        // render the view
         if ($this->_useViewStream && $this->useStreamWrapper()) {
             include 'zend.view://' . $template;
         } else {
             include $template;
         }
+        // reset the previous version of the temp vars
+        $this->_tempVars = $previousTempVars;
     }
 
     /**
@@ -135,7 +148,9 @@ class Ano_View_Engine_PhpEngine extends Ano_View_Engine_Abstract
      */
     public function __get($key)
     {
-        return $this->getView()->$key;
+        return array_key_exists($key, $this->_tempVars) ?
+                    $this->_tempVars[$key] :
+                    $this->getView()->$key;
     }
 
     /**

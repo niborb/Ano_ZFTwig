@@ -161,6 +161,9 @@ class Ano_View_Engine_PhpEngine extends Ano_View_Engine_Abstract
      */
     public function __isset($key)
     {
-        return $this->getView()->__isset($key);
+    public function __isset($key)
+    {
+        return $this->getView()->__isset($key) || array_key_exists($key, $this->_tempVars);
+    }
     }
 }

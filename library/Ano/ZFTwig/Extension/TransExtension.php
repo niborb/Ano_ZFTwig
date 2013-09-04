@@ -23,13 +23,28 @@
 class Ano_ZFTwig_Extension_TransExtension extends Twig_Extension
 {
     /**
+     * @var \Twig_Environment
+     */
+    private $env;
+
+    /**
+     * @param Twig_Environment $environment
+     */
+    public function initRuntime(Twig_Environment $environment)
+    {
+        $this->env = $environment;
+        parent::initRuntime($environment);
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function getFilters()
     {
         return array(
             // {% tag "message"|trans %}
-            'trans' => new Twig_Filter_Method($this, 'trans', array('needs_environment' => true)),
+            'trans' => new Twig_Filter_Method($this, 'trans'),
         );
     }
 
@@ -50,13 +65,12 @@ class Ano_ZFTwig_Extension_TransExtension extends Twig_Extension
      * Calls the ZF translate view helper and
      * returns the translated string.
      *
-     * @param Twig_Environment $env
      * @param string           $input The input to translate
      * @return string          The translated output
      */
-    public function trans(Twig_Environment $env, $input)
+    public function trans($input)
     {        
-        return $env->getView()->translate($input);
+        return $this->env->getView()->translate($input);
     }
 
     /**

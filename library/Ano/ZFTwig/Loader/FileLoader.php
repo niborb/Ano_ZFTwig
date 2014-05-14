@@ -29,6 +29,9 @@ class Ano_ZFTwig_Loader_FileLoader extends Twig_Loader_Filesystem
      */
     public function addPath($path)
     {
+        // invalidate the cache
+        $this->cache = array();
+        
         if (!is_dir($path)) {
             throw new Twig_Error_Loader(sprintf('The "%s" directory does not exist.', $path));
         }
